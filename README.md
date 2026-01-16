@@ -1,94 +1,78 @@
-# 🏫 Kastamonu UBYS Not Takip Sistemi
-### (Kastamonu UBYS Grade Tracker)
+# 🏫 Kastamonu UBYS Grade Tracker
 
 <div align="center">
 
 ![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Selenium](https://img.shields.io/badge/Selenium-Automation-43B02A?style=for-the-badge&logo=selenium&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Cloud-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
-![Telegram](https://img.shields.io/badge/Telegram-Notifications-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Automated-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
+![Telegram](https://img.shields.io/badge/Telegram-API-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)
 
 </div>
 
 ---
 
-### 🇹🇷 Türkçe (Turkish)
+### 🇹🇷 Proje Hakkında (About)
 
-**Kastamonu Üniversitesi** öğrencileri için geliştirilmiş, **7/24 çalışan** otomatik not takip sistemi.
+Bu proje, Kastamonu Üniversitesi UBYS (Üniversite Bilgi Yönetim Sistemi) üzerindeki notları manuel olarak kontrol etme zahmetini ortadan kaldırmak için geliştirilmiş bir **otomasyon aracıdır.**
 
-Siz uyurken veya gezerken bu bot GitHub sunucularında (Cloud) çalışır, UBYS'ye girer ve notlarınızı kontrol eder. Eğer yeni bir not girilmişse veya hocanız var olan bir notu güncellemişse **anında telefonunuza Telegram bildirimi** gönderir.
+Proje, **GitHub Actions** altyapısını kullanarak "Serverless" (Sunucusuz) bir mantıkla çalışır. Belirlenen periyotlarda (Cron Job) tetiklenen Python betiği, **Selenium WebDriver** kullanarak sisteme giriş yapar, güncel not verilerini çeker ve yerel veritabanı (JSON) ile karşılaştırır. Herhangi bir değişiklik tespit edildiğinde **Telegram API** üzerinden kullanıcıya anlık `push` bildirimi gönderir.
 
-**Bilgisayarınızı açık tutmanıza gerek YOKTUR!** Kurulumu yaptıktan sonra tamamen bulut tabanlı çalışır.
+### 🇺🇸 Project Overview
 
-### 🇺🇸 English
+This is an open-source automation tool designed to streamline the grade-checking process for Kastamonu University students.
 
-An automated grade tracking system designed for **Kastamonu University** students that runs **24/7**.
-
-While you sleep or travel, this bot runs on GitHub servers, logs into the UBYS portal, and checks your grades. If a new grade is announced or updated, it sends an **instant Telegram notification** to your phone.
-
-**You do NOT need to keep your computer on!** Once set up, it runs entirely on the cloud.
+Running on **GitHub Actions** as a scheduled workflow, the bot utilizes **Selenium WebDriver** to authenticate and scrape grade data from the UBYS portal. It implements a logic to compare fetched data with the previous state. Upon detecting any updates or new entries, it triggers an instant notification via the **Telegram API**.
 
 ---
 
-## 🌟 Özellikler / Features
+## ⚙️ Teknik Detaylar / Tech Specs
 
-| Özellik (Feature) | Açıklama (Description) |
+| Teknoloji (Tech) | Kullanım Amacı (Usage) |
 | :--- | :--- |
-| **☁️ Cloud-Native** | GitHub Actions üzerinde çalışır. Telefonunuzdan yönetebilirsiniz. (Runs on GitHub Actions.) |
-| **🚀 Anlık Bildirim** | Not girildiği saniye Telegram'dan mesaj gelir. (Instant Telegram alerts.) |
-| **🧠 Akıllı Takip** | Sadece *yeni* veya *değişen* notları bildirir. Spam yapmaz. (Only notifies on changes.) |
-| **🔒 %100 Güvenli** | Şifreleriniz GitHub'ın "Secrets" kasasında şifreli saklanır. Kimse göremez. (Credentials are encrypted.) |
-| **🕵️ Hayalet Mod** | Gelişmiş "Anti-Bot" korumasını aşar, gerçek insan gibi davranır. (Bypasses bot detection.) |
+| **Python 3.9** | Core scripting ve veri işleme. |
+| **Selenium** | Headless Chrome tarayıcısı ile DOM manipülasyonu ve veri kazıma (Scraping). |
+| **GitHub Actions** | Scriptin bulut sunucularda periyodik olarak çalıştırılması (CI/CD). |
+| **Telegram Bot API** | Kullanıcıya asenkron bildirim gönderimi. |
+| **JSON** | Veri kalıcılığı ve değişiklik takibi (Diff Checking). |
 
 ---
 
-## 🛠️ Kurulum Rehberi (5 Dakikada Hazır)
+## 🛠️ Kurulum ve Dağıtım (Setup & Deployment)
 
-Kod bilmenize gerek yok! Aşağıdaki adımları sırasıyla yapın.
+Bu projeyi kendi GitHub hesabınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz.
 
-### Adım 1: Projeyi Kopyalayın (Fork)
-Bu sayfanın sağ üst köşesindeki **"Fork"** butonuna basın ve `Create fork` diyerek projeyi kendi hesabınıza kopyalayın.
+### 1. Repoyu Forklayın
+Sağ üstteki **"Fork"** butonunu kullanarak projeyi kendi hesabınıza kopyalayın.
 
-### Adım 2: Telegram Botu Ayarlayın
-1.  Telegram'da **[@BotFather](https://t.me/BotFather)** kullanıcısını bulun.
-2.  `/newbot` yazın ve botunuza bir isim verin.
-3.  Size vereceği **HTTP API Token**'ı kopyalayın.
-4.  Oluşturduğunuz bota Telegram'dan bir "Selam" mesajı atın.
-5.  Tarayıcınızdan `https://api.telegram.org/bot<TOKEN_BURAYA>/getUpdates` adresine gidin.
-6.  Çıkan yazılarda `"chat":{"id":123456...` kısmındaki numarayı (Chat ID) alın.
+### 2. Telegram Bot Yapılandırması
+1.  **[@BotFather](https://t.me/BotFather)** üzerinden yeni bir bot oluşturun.
+2.  Size verilen **API Token** bilgisini not edin.
+3.  Kendi Chat ID'nizi öğrenmek için botunuza mesaj atıp `https://api.telegram.org/bot<TOKEN>/getUpdates` adresini kontrol edin.
 
-### Adım 3: Şifreleri Ekleyin (Secrets)
-Kendi GitHub sayfanızda kopyaladığınız projeye gidin:
-1.  Üstten **Settings** (Ayarlar) sekmesine tıklayın.
-2.  Soldaki menüden **Secrets and variables** > **Actions** kısmına girin.
-3.  **New repository secret** butonuna basarak şu 4 bilgiyi ekleyin:
+### 3. Environment Variables (Sırlar)
+Projenin çalışabilmesi için hassas verilerinizi (Credentials) GitHub Secrets alanına eklemeniz gerekmektedir.
+`Settings` > `Secrets and variables` > `Actions` > `New repository secret` yolunu izleyin:
 
-| Name (İsim) | Value (Değer) | Açıklama |
-| :--- | :--- | :--- |
-| `OGRENCI_NO` | `245xxxxxx` | Öğrenci Numaranız |
-| `SIFRE` | `Sifreniz123` | UBYS Giriş Şifreniz |
-| `BOT_TOKEN` | `12345:AAH...` | BotFather'dan aldığınız Token |
-| `CHAT_ID` | `12345678` | Kendi Chat ID numaranız |
+| Secret Key | Açıklama |
+| :--- | :--- |
+| `OGRENCI_NO` | Okul numaranız. |
+| `SIFRE` | UBYS giriş şifreniz. |
+| `BOT_TOKEN` | Telegram Bot Token. |
+| `CHAT_ID` | Telegram Chat ID. |
 
-### Adım 4: Botu Başlatın!
-1.  Üst menüden **Actions** sekmesine gidin.
-2.  Sol tarafta **"UBYS Not Takip Botu"** yazısını göreceksiniz, ona tıklayın.
-3.  Sağ tarafta **Run workflow** butonuna basın ve yeşil butona tıklayın.
-
-🎉 **Tebrikler!** Botunuz aktif edildi. Artık her 30 dakikada bir notlarınızı kontrol edecek.
+### 4. Workflow'u Tetikleyin
+**Actions** sekmesine gidin, sol menüden `UBYS Not Takip Botu` iş akışını seçin ve **Run workflow** butonu ile servisi başlatın. Bot artık her 30 dakikada bir çalışacaktır.
 
 ---
 
 ## ⚠️ Yasal Uyarı / Disclaimer
 
-**[TR]** Bu proje açık kaynaklıdır ve eğitim amaçlı geliştirilmiştir. Kastamonu Üniversitesi Bilgi İşlem Daire Başkanlığı ile resmi bir bağı yoktur. Sisteme zarar vermez (sadece okuma yapar), ancak kullanım sorumluluğu tamamen kullanıcıya aittir.
-
-**[EN]** This project is open-source and developed for educational purposes. It is not officially affiliated with Kastamonu University. Use at your own risk.
+Bu yazılım tamamen **eğitim amaçlı** ve kişisel kullanım için geliştirilmiştir. Kastamonu Üniversitesi Bilgi İşlem Daire Başkanlığı ile resmi bir bağlantısı yoktur. Sisteme zarar vermez (Sadece Read-Only işlem yapar). Kullanım sorumluluğu kullanıcıya aittir.
 
 ---
 
-## 🤝 İletişim & Destek (Support)
+<div align="center">
 
-Bir sorun yaşarsanız veya geliştirmek isterseniz:
-* **Developer:** [Yusuf Sami Turan](https://github.com/ysfsturan)
-* **Issues:** Hata bildirimi için "Issues" sekmesini kullanabilirsiniz.
+Made with ❤️ by [Yusuf Sami Turan](https://github.com/ysfsturan)
+
+</div>
