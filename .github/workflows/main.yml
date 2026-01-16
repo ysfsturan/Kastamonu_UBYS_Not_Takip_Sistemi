@@ -1,0 +1,41 @@
+name: UBYS Not Takip Botu
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Her 30 dakikada bir çalışır
+  workflow_dispatch: # Manuel tetikleme butonu ekler
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Repoya yazma izni (dosyayı güncellemek için)
+
+    steps:
+      - name: Depoyu Çek
+        uses: actions/checkout@v3
+
+      - name: Python Kurulumu
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Kütüphaneleri Yükle
+        run: |
+          pip install -r requirements.txt
+
+      - name: Botu Çalıştır
+        env:
+          OGRENCI_NO: ${{ secrets.OGRENCI_NO }}
+          SIFRE: ${{ secrets.SIFRE }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python main.py
+
+      - name: Değişiklikleri Kaydet (Commit & Push)
+        run: |
+          git config --global user.name "Not Takip Botu"
+          git config --global user.email "bot@github.com"
+          git add notlar.json
+          git commit -m "📊 Notlar güncellendi [Bot]" || echo "Değişiklik yok"
+          git push
